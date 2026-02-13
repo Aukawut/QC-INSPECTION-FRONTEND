@@ -115,17 +115,17 @@ export default function ModalUpdatePart({ isOpen, onClose, oldStandard, images, 
     setListResult(prev);
   };
 
+const isValidFormat = (value) => {
+  const regex = /^\d{2,3}\.\d{2}$/;
+  return regex.test(value.trim());
+};
+    
   const handleUpdateSubmit = async () => {
     let errorUslFormat = 0;
     let errorLslFormat = 0;
     let errorLessFormat = 0;
 
-    const isValidFormat = (value) => {
-      // รองรับ 2 หรือ 3 หลักก่อนจุด และ 2 หลักหลังจุด
-      const regex = /^\d{2,3}\.\d{2}$/;
-      return regex.test(value);
-    };
-
+   
     pointCheck.forEach((obj) => {
       // Check 'usl' value
       if (isValidFormat(obj.usl)) {
@@ -426,9 +426,9 @@ export default function ModalUpdatePart({ isOpen, onClose, oldStandard, images, 
                 {new Array(point).fill('').map((val, index) => {
                   const a = 10;
                   const uslValue = pointCheck[index]?.usl;
-                  const isError = uslValue !== undefined && uslValue.length !== 5;
+                  const isError = uslValue !== undefined && isValidFormat(uslValue) === false;
                   const lslValue = pointCheck[index]?.lsl;
-                  const isErrorLsl = lslValue !== undefined && lslValue.length !== 5;
+                  const isErrorLsl = lslValue !== undefined && isValidFormat(lslValue) === false;
                   console.log(a);
                   return (
                     <Grid item xs={12} lg={6} key={index}>

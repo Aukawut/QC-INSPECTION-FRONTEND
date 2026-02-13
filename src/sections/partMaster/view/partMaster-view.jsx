@@ -210,6 +210,11 @@ export default function UserPage() {
     const response = await axios.post(`${baseURL}/backend_qc_inspection/api_formData`, formData);
     console.log(response.data);
   };
+  const isValidFormat = (value) => {
+  const regex = /^\d{2,3}\.\d{2}$/;
+  return regex.test(value.trim());
+};
+
   const handleSubmit = async () => {
     let errorUslFormat = 0;
     let errorLslFormat = 0;
@@ -217,12 +222,7 @@ export default function UserPage() {
       ?.filter((x) => x.checked === true)
       ?.map((val) => val.id_result);
 
-    const isValidFormat = (value) => {
-      // รองรับ 2 หรือ 3 หลักก่อนจุด และ 2 หลักหลังจุด
-      const regex = /^\d{2,3}\.\d{2}$/;
-      return regex.test(value);
-    };
-
+   
     pointCheck.forEach((obj) => {
       // Check 'usl' value
       if (isValidFormat(obj.usl)) {
@@ -508,9 +508,9 @@ export default function UserPage() {
                   {new Array(point).fill('').map((val, index) => {
                     const a = 10;
                     const uslValue = pointCheck[index]?.usl;
-                    const isError = uslValue !== undefined && uslValue.length !== 5;
+                       const isError = uslValue !== undefined && isValidFormat(uslValue) === false;
                     const lslValue = pointCheck[index]?.lsl;
-                    const isErrorLsl = lslValue !== undefined && lslValue.length !== 5;
+                    const isErrorLsl = lslValue !== undefined && isValidFormat(lslValue) === false;
                     console.log(a);
                     return (
                       <Grid item xs={12} lg={6} key={index}>
